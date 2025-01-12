@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordR
 import StopIcon from '@mui/icons-material/Stop';
 import { analyzeAudio } from '../services/api';
 import { InputAnalysisSchema } from '../types/analysis';
+import { DragDrop } from './DragDrop';
 
 export const AudioAnalysis: React.FC = () => {
   const theme = useTheme();
@@ -25,9 +26,36 @@ export const AudioAnalysis: React.FC = () => {
     analysis: InputAnalysisSchema;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [recordingTime, setRecordingTime] = useState(0);
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const timerRef = useRef<NodeJS.Timer>();
+
+  useEffect(() => {
+    if (isRecording) {
+      timerRef.current = setInterval(() => {
+        setRecordingTime(prev => prev + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+      setRecordingTime(0);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [isRecording]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   const startRecording = async () => {
     try {
@@ -67,12 +95,9 @@ export const AudioAnalysis: React.FC = () => {
     }
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setAudioFile(file);
-      setAudioUrl(URL.createObjectURL(file));
-    }
+  const handleFileDrop = (file: File) => {
+    setAudioFile(file);
+    setAudioUrl(URL.createObjectURL(file));
   };
 
   const handleAnalyze = async () => {
@@ -113,43 +138,47 @@ export const AudioAnalysis: React.FC = () => {
 
   return (
     <Stack spacing={3} sx={{ maxWidth: 800, mx: 'auto', p: 2 }} alignItems="center">
-      <Stack spacing={2} alignItems="center">
-        <Button
-          variant="contained"
-          component="label"
-        >
-          Upload Audio
-          <input
-            type="file"
-            hidden
+      <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
+        {!audioUrl && (
+          <DragDrop
+            onFileDrop={handleFileDrop}
             accept="audio/*"
-            onChange={handleFileUpload}
+            maxSize={10}
           />
-        </Button>
+        )}
+
+        <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
+          or
+        </Typography>
         
         {!isProcessingRecording && (
-          <Button
-            variant="contained"
-            onClick={isRecording ? stopRecording : startRecording}
-            disabled={loading}
-            sx={{
-              borderRadius: '50%',
-              width: 55,
-              height: 55,
-              minWidth: 55,
-              background: colors.background,
-              color: isRecording ? '#ffffff' : (theme.palette.mode === 'dark' ? '#000000' : '#ffffff'),
-              '&:hover': {
-                background: colors.hover,
-              },
-              transition: 'all 0.3s ease',
-            }}
-          >
-            {isRecording ? 
-              <StopIcon sx={{ fontSize: '28px' }} /> : 
-              <FiberManualRecordRoundedIcon sx={{ fontSize: '28px' }} />
-            }
-          </Button>
+          <Stack alignItems="center" spacing={1}>
+            <Button
+              variant="contained"
+              onClick={isRecording ? stopRecording : startRecording}
+              disabled={loading}
+              sx={{
+                borderRadius: '50%',
+                width: 55,
+                height: 55,
+                minWidth: 55,
+                background: colors.background,
+                color: isRecording ? '#ffffff' : (theme.palette.mode === 'dark' ? '#000000' : '#ffffff'),
+                '&:hover': {
+                  background: colors.hover,
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              {isRecording ? 
+                <StopIcon sx={{ fontSize: '28px' }} /> : 
+                <FiberManualRecordRoundedIcon sx={{ fontSize: '28px' }} />
+              }
+            </Button>
+            <Typography variant="body2" color="text.secondary">
+              {isRecording ? formatTime(recordingTime) : 'Record'}
+            </Typography>
+          </Stack>
         )}
       </Stack>
 

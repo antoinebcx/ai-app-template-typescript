@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { analyzeImage } from '../services/api';
 import { InputAnalysisSchema } from '../types/analysis';
+import { DragDrop } from './DragDrop';
 
 export const ImageAnalysis: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -20,12 +21,9 @@ export const ImageAnalysis: React.FC = () => {
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-    }
+  const handleFileDrop = (file: File) => {
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
   const handleAnalyze = async () => {
@@ -46,18 +44,13 @@ export const ImageAnalysis: React.FC = () => {
 
   return (
     <Stack spacing={3} sx={{ maxWidth: 800, mx: 'auto', p: 2 }} alignItems="center">
-      <Button
-        variant="contained"
-        component="label"
-      >
-        Upload Image
-        <input
-          type="file"
-          hidden
+      {!imagePreview && (
+        <DragDrop
+          onFileDrop={handleFileDrop}
           accept="image/*"
-          onChange={handleFileUpload}
+          maxSize={5}
         />
-      </Button>
+      )}
 
       {imagePreview && (
         <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>

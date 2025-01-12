@@ -76,7 +76,6 @@ export const TextAnalysis: React.FC = () => {
 
       {loading && (
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <CircularProgress size={20} />
           <Typography color="text.secondary">
             Processing your text...
           </Typography>

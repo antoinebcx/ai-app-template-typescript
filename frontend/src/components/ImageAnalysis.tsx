@@ -63,19 +63,21 @@ export const ImageAnalysis: React.FC = () => {
               objectFit: 'contain' 
             }} 
           />
-          <Button
-            variant="contained"
-            onClick={handleAnalyze}
-            disabled={loading}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Analyze Image'}
-          </Button>
         </Stack>
       )}
 
+      <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
+        <Button
+          variant="contained"
+          onClick={handleAnalyze}
+          disabled={loading || !imagePreview}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Analyze Audio'}
+        </Button>
+      </Stack>
+
       {loading && (
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <CircularProgress size={20} />
           <Typography color="text.secondary">
             Processing your image...
           </Typography>

@@ -26,12 +26,15 @@ function App() {
       <Navbar onToggleColorMode={toggleColorMode} />
       <Container maxWidth="lg">
         <Box sx={{ mt: 10, mb: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
+          <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ fontWeight: 450 }}>
             AI app template
           </Typography>
           
-          <Typography variant="body1" gutterBottom align="center">
-            This app demonstrates how to use AI services to analyze text, audio, and images.
+          <Typography variant="body1" align="center" sx={{ color: 'text.secondary' }}>
+            This app demonstrates how to use AI services to extract information
+          </Typography>
+          <Typography variant="body1" align="center" sx={{ color: 'text.secondary' }}>
+            in a structured way from text, audio, and images.
           </Typography>
 
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 4 }}>

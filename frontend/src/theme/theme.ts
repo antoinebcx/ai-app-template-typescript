@@ -68,6 +68,13 @@ export const getDesignTokens = (mode: PaletteMode) => ({
         },
       },
     },
+    MuiTab: {
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+          },
+        },
+      },
   },
 });
 

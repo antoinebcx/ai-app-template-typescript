@@ -146,11 +146,11 @@ export const AudioAnalysis: React.FC = () => {
             maxSize={10}
           />
         )}
-
+        {!audioUrl && (
         <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
           or
         </Typography>
-        
+        )}
         {!isProcessingRecording && (
           <Stack alignItems="center" spacing={1}>
             <Button
@@ -185,19 +185,19 @@ export const AudioAnalysis: React.FC = () => {
       {audioUrl && (
         <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
           <audio controls src={audioUrl} style={{ width: '100%' }} />
-          <Button
-            variant="contained"
-            onClick={handleAnalyze}
-            disabled={loading}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Analyze Audio'}
-          </Button>
         </Stack>
       )}
-
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Button
+          variant="contained"
+          onClick={handleAnalyze}
+          disabled={loading || !audioUrl}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Analyze Audio'}
+        </Button>
+      </Box>
       {loading && (
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <CircularProgress size={20} />
           <Typography color="text.secondary">
             Processing your recording...
           </Typography>

@@ -15,12 +15,12 @@ OPENAI_API_KEY = [your OpenAI API key]
 
 Then, you can open two terminal windows, go to the project path and run:
 ```
-cd /frontend
+cd frontend
 npm install
 npm run dev
 ```
 ```
-cd /backend
+cd backend
 npm install
 npm run dev
 ```

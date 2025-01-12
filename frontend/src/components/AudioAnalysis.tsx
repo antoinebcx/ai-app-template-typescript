@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Typography,
-  Paper,
   CircularProgress,
   useTheme,
   Stack
@@ -13,6 +12,7 @@ import StopIcon from '@mui/icons-material/Stop';
 import { analyzeAudio } from '../services/api';
 import { InputAnalysisSchema } from '../types/analysis';
 import { DragDrop } from './DragDrop';
+import { Analysis } from './Analysis';
 
 export const AudioAnalysis: React.FC = () => {
   const theme = useTheme();
@@ -211,45 +211,7 @@ export const AudioAnalysis: React.FC = () => {
       )}
 
       {result && (
-        <Paper sx={{ p: 3, width: '100%' }} elevation={0}>
-          <Stack spacing={3}>
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                Transcript
-              </Typography>
-              <Typography variant="body1" paragraph>
-                {result.transcript}
-              </Typography>
-            </Box>
-
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                Analysis
-              </Typography>
-              
-              <Typography variant="body1" paragraph>
-                <strong>Reasoning:</strong> {result.analysis.reasoning}
-              </Typography>
-
-              <Stack spacing={2}>
-                {result.analysis.elements.map((element) => (
-                  <Box key={element.elementNumber}>
-                    <Typography variant="body1" gutterBottom>
-                      <strong>{element.elementNumber}. {element.elementName}</strong>
-                    </Typography>
-                    <Typography variant="body2">
-                      {element.elementDescription}
-                    </Typography>
-                  </Box>
-                ))}
-              </Stack>
-
-              <Typography variant="body1" sx={{ mt: 2 }}>
-                <strong>Summary:</strong> {result.analysis.summary}
-              </Typography>
-            </Box>
-          </Stack>
-        </Paper>
+        <Analysis data={result} />
       )}
     </Stack>
   );

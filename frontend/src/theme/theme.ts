@@ -51,6 +51,23 @@ export const getDesignTokens = (mode: PaletteMode) => ({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          borderRadius: '8px',
+          fontSize: '0.95rem',
+          padding: '8px 16px',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: '12px',
+        },
+      },
+    },
   },
 });
 

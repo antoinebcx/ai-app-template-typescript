@@ -5,8 +5,8 @@ import {
   Typography,
   Paper,
   CircularProgress,
-  Grid,
-  useTheme
+  useTheme,
+  Stack
 } from '@mui/material';
 import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
 import StopIcon from '@mui/icons-material/Stop';
@@ -112,8 +112,8 @@ export const AudioAnalysis: React.FC = () => {
   const colors = getButtonColors();
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
-      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+    <Stack spacing={3} sx={{ maxWidth: 800, mx: 'auto', p: 2 }} alignItems="center">
+      <Stack spacing={2} alignItems="center">
         <Button
           variant="contained"
           component="label"
@@ -151,79 +151,77 @@ export const AudioAnalysis: React.FC = () => {
             }
           </Button>
         )}
-      </Box>
+      </Stack>
 
       {audioUrl && (
-        <Box sx={{ mb: 2 }}>
-          <audio controls src={audioUrl} />
+        <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
+          <audio controls src={audioUrl} style={{ width: '100%' }} />
           <Button
             variant="contained"
             onClick={handleAnalyze}
             disabled={loading}
-            sx={{ mt: 1 }}
           >
             {loading ? <CircularProgress size={24} /> : 'Analyze Audio'}
           </Button>
-        </Box>
+        </Stack>
       )}
 
       {loading && (
-        <Grid
-          sx={{
-            mt: 2,
-            gap: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%'
-          }}
-        >
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           <CircularProgress size={20} />
-          <Typography variant="body1" color="text.secondary">
+          <Typography color="text.secondary">
             Processing your recording...
           </Typography>
-        </Grid>
+        </Box>
       )}
 
       {error && (
-        <Typography color="error" sx={{ mb: 2 }}>
+        <Typography color="error">
           {error}
         </Typography>
       )}
 
       {result && (
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            Transcript
-          </Typography>
-          <Typography variant="body1" paragraph>
-            {result.transcript}
-          </Typography>
-
-          <Typography variant="h6" gutterBottom>
-            Analysis
-          </Typography>
-          
-          <Typography variant="body1" gutterBottom>
-            <strong>Reasoning:</strong> {result.analysis.reasoning}
-          </Typography>
-
-          {result.analysis.elements.map((element) => (
-            <Box key={element.elementNumber} sx={{ mb: 2 }}>
-              <Typography variant="body1">
-                <strong>{element.elementNumber}. {element.elementName}</strong>
+        <Paper sx={{ p: 3, width: '100%' }} elevation={0}>
+          <Stack spacing={3}>
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                Transcript
               </Typography>
-              <Typography variant="body2">
-                {element.elementDescription}
+              <Typography variant="body1" paragraph>
+                {result.transcript}
               </Typography>
             </Box>
-          ))}
 
-          <Typography variant="body1">
-            <strong>Summary:</strong> {result.analysis.summary}
-          </Typography>
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                Analysis
+              </Typography>
+              
+              <Typography variant="body1" paragraph>
+                <strong>Reasoning:</strong> {result.analysis.reasoning}
+              </Typography>
+
+              <Stack spacing={2}>
+                {result.analysis.elements.map((element) => (
+                  <Box key={element.elementNumber}>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>{element.elementNumber}. {element.elementName}</strong>
+                    </Typography>
+                    <Typography variant="body2">
+                      {element.elementDescription}
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
+
+              <Typography variant="body1" sx={{ mt: 2 }}>
+                <strong>Summary:</strong> {result.analysis.summary}
+              </Typography>
+            </Box>
+          </Stack>
         </Paper>
       )}
-    </Box>
+    </Stack>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Stack,
   Box,
   Button,
   Typography,
@@ -44,11 +45,10 @@ export const ImageAnalysis: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
+    <Stack spacing={3} sx={{ maxWidth: 800, mx: 'auto', p: 2 }} alignItems="center">
       <Button
         variant="contained"
         component="label"
-        sx={{ mb: 2 }}
       >
         Upload Image
         <input
@@ -60,7 +60,7 @@ export const ImageAnalysis: React.FC = () => {
       </Button>
 
       {imagePreview && (
-        <Box sx={{ mb: 2 }}>
+        <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
           <img 
             src={imagePreview} 
             alt="Preview" 
@@ -74,52 +74,68 @@ export const ImageAnalysis: React.FC = () => {
             variant="contained"
             onClick={handleAnalyze}
             disabled={loading}
-            sx={{ mt: 1 }}
           >
             {loading ? <CircularProgress size={24} /> : 'Analyze Image'}
           </Button>
+        </Stack>
+      )}
+
+      {loading && (
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <CircularProgress size={20} />
+          <Typography color="text.secondary">
+            Processing your image...
+          </Typography>
         </Box>
       )}
 
       {error && (
-        <Typography color="error" sx={{ mb: 2 }}>
+        <Typography color="error">
           {error}
         </Typography>
       )}
 
       {result && (
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            Extracted Text
-          </Typography>
-          <Typography variant="body1" paragraph>
-            {result.extractedText}
-          </Typography>
-
-          <Typography variant="h6" gutterBottom>
-            Analysis
-          </Typography>
-          
-          <Typography variant="body1" gutterBottom>
-            <strong>Reasoning:</strong> {result.analysis.reasoning}
-          </Typography>
-
-          {result.analysis.elements.map((element) => (
-            <Box key={element.elementNumber} sx={{ mb: 2 }}>
-              <Typography variant="body1">
-                <strong>{element.elementNumber}. {element.elementName}</strong>
+        <Paper sx={{ p: 3, width: '100%' }} elevation={0}>
+          <Stack spacing={3}>
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                Extracted Text
               </Typography>
-              <Typography variant="body2">
-                {element.elementDescription}
+              <Typography variant="body1" paragraph>
+                {result.extractedText}
               </Typography>
             </Box>
-          ))}
 
-          <Typography variant="body1">
-            <strong>Summary:</strong> {result.analysis.summary}
-          </Typography>
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                Analysis
+              </Typography>
+              
+              <Typography variant="body1" paragraph>
+                <strong>Reasoning:</strong> {result.analysis.reasoning}
+              </Typography>
+
+              <Stack spacing={2}>
+                {result.analysis.elements.map((element) => (
+                  <Box key={element.elementNumber}>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>{element.elementNumber}. {element.elementName}</strong>
+                    </Typography>
+                    <Typography variant="body2">
+                      {element.elementDescription}
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
+
+              <Typography variant="body1" sx={{ mt: 2 }}>
+                <strong>Summary:</strong> {result.analysis.summary}
+              </Typography>
+            </Box>
+          </Stack>
         </Paper>
       )}
-    </Box>
+    </Stack>
   );
 };

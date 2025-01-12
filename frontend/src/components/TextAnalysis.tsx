@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Stack,
   Box,
   Button,
   TextField,
@@ -33,7 +34,7 @@ export const TextAnalysis: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
+    <Stack spacing={3} sx={{ maxWidth: 800, mx: 'auto', p: 2 }} alignItems="center">
       <TextField
         fullWidth
         multiline
@@ -42,54 +43,63 @@ export const TextAnalysis: React.FC = () => {
         label="Enter text to analyze"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        sx={{ mb: 2 }}
       />
       
       <Button
         variant="contained"
         onClick={handleAnalyze}
         disabled={loading || !text.trim()}
-        sx={{ mb: 2 }}
       >
         {loading ? <CircularProgress size={24} /> : 'Analyze Text'}
       </Button>
 
+      {loading && (
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <CircularProgress size={20} />
+          <Typography color="text.secondary">
+            Processing your text...
+          </Typography>
+        </Box>
+      )}
+
       {error && (
-        <Typography color="error" sx={{ mb: 2 }}>
+        <Typography color="error">
           {error}
         </Typography>
       )}
 
       {result && (
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            Analysis Result
-          </Typography>
-          
-          <Typography variant="body1" gutterBottom>
-            <strong>Reasoning:</strong> {result.reasoning}
-          </Typography>
-
-          <Typography variant="h6" sx={{ mt: 2, mb: 1 }}>
-            Elements:
-          </Typography>
-          
-          {result.elements.map((element) => (
-            <Box key={element.elementNumber} sx={{ mb: 2 }}>
-              <Typography variant="body1">
-                <strong>{element.elementNumber}. {element.elementName}</strong>
+        <Paper sx={{ p: 3, width: '100%' }} elevation={0}>
+          <Stack spacing={3}>
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                Analysis Result
               </Typography>
-              <Typography variant="body2">
-                {element.elementDescription}
+              
+              <Typography variant="body1" paragraph>
+                <strong>Reasoning:</strong> {result.reasoning}
+              </Typography>
+
+              <Stack spacing={2}>
+                {result.elements.map((element) => (
+                  <Box key={element.elementNumber}>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>{element.elementNumber}. {element.elementName}</strong>
+                    </Typography>
+                    <Typography variant="body2">
+                      {element.elementDescription}
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
+
+              <Typography variant="body1" sx={{ mt: 2 }}>
+                <strong>Summary:</strong> {result.summary}
               </Typography>
             </Box>
-          ))}
-
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            <strong>Summary:</strong> {result.summary}
-          </Typography>
+          </Stack>
         </Paper>
       )}
-    </Box>
+    </Stack>
   );
 };

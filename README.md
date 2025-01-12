@@ -6,6 +6,8 @@ The project shows how to use structured outputs with a reasoning field, how to e
 
 The app supports text inputs, audio transcription and text extraction from images.
 
+<img width="1320" alt="image" src="https://github.com/user-attachments/assets/fbf56830-751e-41d7-98bf-1f16c11e8aad" />
+
 ## To use the app
 
 To use the app, you need to create a `.env` file in the `/backend` directory with:

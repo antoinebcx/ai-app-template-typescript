@@ -48,7 +48,7 @@ export const TextAnalysis: React.FC = () => {
         sx={{
           '& .MuiOutlinedInput-root': {
             borderRadius: 2,
-            bgcolor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.025)' : 'rgba(0, 0, 0, 0.01)',
             '&:hover': {
               bgcolor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.04)',
             },

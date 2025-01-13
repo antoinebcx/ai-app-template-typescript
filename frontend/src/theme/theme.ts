@@ -72,6 +72,8 @@ export const getDesignTokens = (mode: PaletteMode) => ({
         styleOverrides: {
           root: {
             textTransform: 'none',
+            fontSize: '16px',
+            fontWeight: 450,
           },
         },
       },

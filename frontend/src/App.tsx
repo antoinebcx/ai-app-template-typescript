@@ -31,10 +31,7 @@ function App() {
           </Typography>
           
           <Typography variant="body1" align="center" sx={{ color: 'text.secondary' }}>
-            This app demonstrates how to use AI services to extract information
-          </Typography>
-          <Typography variant="body1" align="center" sx={{ color: 'text.secondary' }}>
-            in a structured way from text, audio, and images.
+            Extract information in a structured way from text, audio and images.
           </Typography>
 
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 4 }}>

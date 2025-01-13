@@ -126,11 +126,11 @@ export const AudioAnalysis: React.FC = () => {
     }
     return {
       background: theme.palette.mode === 'dark' 
-        ? 'linear-gradient(180deg, #ffffff 0%, #bbbbbb 100%)'
-        : 'linear-gradient(180deg, #000000 0%, #383838 100%)',
+        ? '#ffffff'
+        : '#000000',
       hover: theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, #e0e0e0 0%, #bdbdbd 100%)'
-        : 'linear-gradient(180deg, #404040 0%, #1a1a1a 100%)'
+        ? '#e0e0e0'
+        : '#404040'
     };
   };
 
@@ -193,11 +193,11 @@ export const AudioAnalysis: React.FC = () => {
           onClick={handleAnalyze}
           disabled={loading || !audioUrl}
         >
-          {loading ? <CircularProgress size={24} /> : 'Analyze Audio'}
+          {loading ? <CircularProgress size={24} /> : 'Analyze audio'}
         </Button>
       </Box>
       {loading && (
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography color="text.secondary">
             Processing your recording...
           </Typography>

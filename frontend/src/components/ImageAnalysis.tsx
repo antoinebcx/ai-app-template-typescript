@@ -72,12 +72,12 @@ export const ImageAnalysis: React.FC = () => {
           onClick={handleAnalyze}
           disabled={loading || !imagePreview}
         >
-          {loading ? <CircularProgress size={24} /> : 'Analyze Audio'}
+          {loading ? <CircularProgress size={24} /> : 'Analyze image'}
         </Button>
       </Stack>
 
       {loading && (
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography color="text.secondary">
             Processing your image...
           </Typography>

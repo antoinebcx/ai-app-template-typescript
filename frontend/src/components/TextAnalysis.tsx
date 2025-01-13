@@ -71,11 +71,11 @@ export const TextAnalysis: React.FC = () => {
         onClick={handleAnalyze}
         disabled={loading || !text.trim()}
       >
-        {loading ? <CircularProgress size={24} /> : 'Analyze Text'}
+        {loading ? <CircularProgress size={24} /> : 'Analyze text'}
       </Button>
 
       {loading && (
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography color="text.secondary">
             Processing your text...
           </Typography>

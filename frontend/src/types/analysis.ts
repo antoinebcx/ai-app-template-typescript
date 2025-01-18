@@ -9,3 +9,8 @@ export interface InputAnalysisSchema {
     elements: ElementSchema[];
     summary: string;
 }
+
+export interface ClassificationResult {
+    category: string;
+    confidence: number;
+}

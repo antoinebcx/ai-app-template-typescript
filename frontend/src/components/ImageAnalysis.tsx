@@ -7,9 +7,10 @@ import {
   CircularProgress
 } from '@mui/material';
 import { analyzeImage } from '../services/api';
-import { InputAnalysisSchema } from '../types/analysis';
+import { InputAnalysisSchema, ClassificationResult } from '../types/analysis';
 import { DragDrop } from './DragDrop';
 import { Analysis } from './Analysis';
+import { Classification } from './Classification';
 
 export const ImageAnalysis: React.FC = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -18,6 +19,7 @@ export const ImageAnalysis: React.FC = () => {
   const [result, setResult] = useState<{
     extractedText: string;
     analysis: InputAnalysisSchema;
+    classification: ClassificationResult;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,10 +30,8 @@ export const ImageAnalysis: React.FC = () => {
 
   const handleAnalyze = async () => {
     if (!imageFile) return;
-    
     setLoading(true);
     setError(null);
-    
     try {
       const analysis = await analyzeImage(imageFile);
       setResult(analysis);
@@ -54,14 +54,14 @@ export const ImageAnalysis: React.FC = () => {
 
       {imagePreview && (
         <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
-          <img 
-            src={imagePreview} 
-            alt="Preview" 
-            style={{ 
-              maxWidth: '100%', 
-              maxHeight: '300px', 
-              objectFit: 'contain' 
-            }} 
+          <img
+            src={imagePreview}
+            alt="Preview"
+            style={{
+              maxWidth: '100%',
+              maxHeight: '300px',
+              objectFit: 'contain'
+            }}
           />
         </Stack>
       )}
@@ -91,7 +91,10 @@ export const ImageAnalysis: React.FC = () => {
       )}
 
       {result && (
-        <Analysis data={result} />
+        <>
+          <Analysis data={result.analysis} />
+          <Classification data={result.classification} />
+        </>
       )}
     </Stack>
   );

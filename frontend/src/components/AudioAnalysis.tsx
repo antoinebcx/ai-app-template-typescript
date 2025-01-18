@@ -10,9 +10,10 @@ import {
 import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
 import StopIcon from '@mui/icons-material/Stop';
 import { analyzeAudio } from '../services/api';
-import { InputAnalysisSchema } from '../types/analysis';
+import { InputAnalysisSchema, ClassificationResult } from '../types/analysis';
 import { DragDrop } from './DragDrop';
 import { Analysis } from './Analysis';
+import { Classification } from './Classification';
 
 export const AudioAnalysis: React.FC = () => {
   const theme = useTheme();
@@ -24,6 +25,7 @@ export const AudioAnalysis: React.FC = () => {
   const [result, setResult] = useState<{
     transcript: string;
     analysis: InputAnalysisSchema;
+    classification: ClassificationResult;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
@@ -147,9 +149,9 @@ export const AudioAnalysis: React.FC = () => {
           />
         )}
         {!audioUrl && (
-        <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
-          or
-        </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
+            or
+          </Typography>
         )}
         {!isProcessingRecording && (
           <Stack alignItems="center" spacing={1}>
@@ -211,7 +213,10 @@ export const AudioAnalysis: React.FC = () => {
       )}
 
       {result && (
-        <Analysis data={result} />
+        <>
+          <Analysis data={result.analysis} />
+          <Classification data={result.classification} />
+        </>
       )}
     </Stack>
   );

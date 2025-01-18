@@ -9,14 +9,16 @@ import {
   useTheme
 } from '@mui/material';
 import { analyzeText } from '../services/api';
-import { InputAnalysisSchema } from '../types/analysis';
+import { InputAnalysisSchema, ClassificationResult } from '../types/analysis';
 import { Analysis } from './Analysis';
+import { Classification } from './Classification';
 
 export const TextAnalysis: React.FC = () => {
   const theme = useTheme();
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<InputAnalysisSchema | null>(null);
+  const [classification, setClassification] = useState<ClassificationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleAnalyze = async () => {
@@ -24,8 +26,9 @@ export const TextAnalysis: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const analysis = await analyzeText(text);
-      setResult(analysis);
+      const response = await analyzeText(text);
+      setResult(response.analysis);
+      setClassification(response.classification);
     } catch (err) {
       setError('Failed to analyze text. Please try again.');
     } finally {
@@ -88,9 +91,8 @@ export const TextAnalysis: React.FC = () => {
         </Typography>
       )}
 
-      {result && (
-        <Analysis data={result} />
-      )}
+      {result && <Analysis data={result} />}
+      {classification && <Classification data={classification} />}
     </Stack>
   );
 };

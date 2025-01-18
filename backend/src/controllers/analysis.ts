@@ -1,11 +1,15 @@
 import { Request, Response } from 'express';
 import { llmAnalysis, audioTranscription, imageToText } from '../ai/services';
+import { classifyWithFunctionCalling } from '../ai/functionCalling';
 
 export async function analyzeText(req: Request, res: Response) {
   try {
     const { text } = req.body;
-    const analysis = await llmAnalysis(text);
-    res.json(analysis);
+    const [analysis, classification] = await Promise.all([
+      llmAnalysis(text),
+      classifyWithFunctionCalling(text)
+    ]);
+    res.json({ analysis, classification });
   } catch (error) {
     res.status(500).json({ error: 'Failed to analyze text' });
   }
@@ -17,11 +21,15 @@ export async function analyzeAudio(req: Request, res: Response) {
     if (!audioBuffer) throw new Error('No audio file provided');
     
     const transcript = await audioTranscription(audioBuffer);
-    const analysis = await llmAnalysis(transcript);
+    const [analysis, classification] = await Promise.all([
+      llmAnalysis(transcript),
+      classifyWithFunctionCalling(transcript)
+    ]);
     
     res.json({
       transcript,
-      analysis
+      analysis,
+      classification
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to analyze audio' });
@@ -34,11 +42,15 @@ export async function analyzeImage(req: Request, res: Response) {
     if (!imageBuffer) throw new Error('No image file provided');
     
     const extractedText = await imageToText(imageBuffer);
-    const analysis = await llmAnalysis(extractedText);
+    const [analysis, classification] = await Promise.all([
+      llmAnalysis(extractedText),
+      classifyWithFunctionCalling(extractedText)
+    ]);
     
     res.json({
       extractedText,
-      analysis
+      analysis,
+      classification
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to analyze image' });

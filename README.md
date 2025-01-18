@@ -2,7 +2,7 @@
 
 This project is a template of an AI app, built with TypeScript and using Vite, React, Node and Express. It demonstrates how to use AI services to extract information in a structured way from text, audio, and images.
 
-The project shows how to use structured outputs with a reasoning field, how to effectively structure a prompt with XML tags, and how to use few-shot examples (in-context learning).
+The project shows how to effectively structure a prompt with XML tags and how to use structured outputs with a reasoning field, function calling (tool use) and few-shot examples (in-context learning).
 
 The app supports text inputs, audio transcription and text extraction from images.
 
@@ -34,6 +34,7 @@ The template is structured as a classic TypeScript fullstack app, in a monorepo 
 It contains notably:
 - AI services (LLM, audio transcription and text extraction from image) in [`backend/src/ai/services.ts`](https://github.com/antoinebcx/ai-app-template-typescript/blob/main/backend/src/ai/services.ts)
 - Their corresponding frontend components (`TextAnalysis`, `AudioAnalysis`, `ImageAnalysis`) in [`frontend/src/components`](https://github.com/antoinebcx/ai-app-template-typescript/tree/main/frontend/src/components)
+- Function calling (tool use) in [`backend/src/ai/functionCalling.ts`](https://github.com/antoinebcx/ai-app-template-typescript/blob/main/backend/src/ai/functionCalling.ts)
 - System prompt and user prompt with XML tags in [`backend/src/utils/prompts.ts`](https://github.com/antoinebcx/ai-app-template-typescript/blob/main/backend/src/utils/prompts.ts)
 - Few-shot example in [`backend/src/utils/examples.ts`](https://github.com/antoinebcx/ai-app-template-typescript/blob/main/backend/src/utils/examples.ts)
 - Structured outputs Zod schemas in [`backend/src/schemas/analysis.ts`](https://github.com/antoinebcx/ai-app-template-typescript/blob/main/backend/src/schemas/analysis.ts)
